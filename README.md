@@ -23,7 +23,7 @@ const sclape = new Sclape({
   handlers: {
     handlerFunction,
     inputHanlder,
-  }
+  },
   // 3. Если хотите использовать реактивные значения sclape, в поле data
   // поместите все значения, используемые в элементах DOM
   data: {
@@ -49,8 +49,8 @@ const store = sclape.initStore();
 event - тип события, function - функция-обработчик, помещенная в объект Sclape при инициализации
 
 ```html
-<div data-sclape-click="handlerFunction"></div>
-<div data-sclape-input="inputHandler"></div>
+<div data-click="handlerFunction"></div>
+<div data-input="inputHandler"></div>
 ```
 
 Поддерживаются события *click*, *input*, *blur*, *focus*
