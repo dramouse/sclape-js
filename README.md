@@ -1,4 +1,6 @@
-# Sclape - too easy way to work with DOM events and reactive values with no validation break
+# В РАЗРАБОТКЕ
+
+## Sclape - too easy way to work with DOM events and reactive values with no validation break
 
 Sclape - это библиотека для создания событий и добавления реактивных значений
 в DOM элеметы через data атрибуты.
