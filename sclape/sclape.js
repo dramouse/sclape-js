@@ -9,12 +9,12 @@ export default class Sclape {
   constructor({handlers, data}) {
     this.handlers = handlers;
     this.data = data;
-    this.eventsRemovers = [];
+    this._eventsRemovers = [];
   }
 
   // sclape events initialization
   initEvents() {
-    if (!this.handlers) return console.error('event handlers is not defined');
+    if (!Object.keys(this.handlers).length) return console.error('event handlers is not defined');
 
     var elementsWithEvents = document.querySelectorAll('[data-sclape-on]');
     
@@ -28,19 +28,45 @@ export default class Sclape {
 
       elementEvents.forEach(event => {
         const remover = addEvent(element, event, this.handlers);
-        this.eventsRemovers.push(remover);
+        this._eventsRemovers.push(remover);
       });
     }
   }
 
   // sclape event remover
   removeEvents() {
-    this.eventsRemovers.forEach(remover => remover());
+    this._eventsRemovers.forEach(remover => remover());
   }
 
   // sclape store initialization
   initStore() {
+    var dataLength = Object.keys(this.data).length;
+    if (!dataLength) return console.error('reactive data is not defined');
+    
+    var store = {};
 
+    var elementsWithReactiveValue = document.querySelectorAll('[data-sclape-value]');
+    var elementsWithReactiveHtml = document.querySelectorAll('[data-sclape-html]');
+
+    if (!elementsWithReactiveHtml.length && !elementsWithReactiveValue.length) return console.error('no elements with reactive data')
+
+    for (let i = 0; i < dataLength; i++) {
+      const [key, value] = Object.entries(this.data)[i];
+
+      elementsWithReactiveValue?.forEach(element => {
+        if (element.dataset.sclapeValue === key) {
+          store[key] = initStoreData(element, value, 'text')
+        }
+      })
+
+      elementsWithReactiveHtml?.forEach(element => {
+        if (element.dataset.sclapeHtml === key) {
+          store[key] = initStoreData(element, value, 'html')
+        }
+      })
+    }
+
+    return store;
   }
 }
 
@@ -62,4 +88,43 @@ function addEvent(element, event, handlers) {
   return function() {
     element.removeEventListener(eventType, handlers[eventHandlerName]);
   }
+}
+
+/**
+ * Store values initialization
+ * @param {Object} element - DOM element with this value
+ * @param {any} value
+ * @param {String} type - 'text' or 'html'
+ * @returns {Object} store instance
+ */
+function initStoreData(element, value, type) {
+  const updateValue = (element, type, value) => {
+    switch (type) {
+      case 'text':
+        element.textContent = value;
+        break;
+      case 'html':
+        element.innerHTML = value;
+        break;
+    }
+  }
+
+  updateValue(element, type, value);
+
+  return new Proxy({
+    value,
+    element
+  }, {
+    set(target, prop, value) {
+      if (prop === 'element') {
+        console.error('dont try to break store, please');
+        return false;
+      }
+
+      updateValue(element, type, value);
+
+      target[prop] = value;
+      return true;
+    }
+  })
 }

@@ -1,29 +1,33 @@
-<!-- Example -->
+<!-- Try it! -->
+
+<!-- .html file -->
 <html>
   <script src="./sclape/sclape.js" type="module"></script>
 
-  <div data-sclape-on="click:handlerFunc"></div>
-  <div data-value="variable"></div>
-
-  <script>
-
-    function handlerFunc() {
-      // ...
-    }
-
-    let variable = 'some text';
-
-    const sclape = new Sclape({
-      handlers: {
-        handlerFunc,
-      },
-      data: {
-        variable
-      }
-    })
-
-    sclape.initEvents();
-    const store = sclape.initStore();
-    
-  </script>
+  <div data-sclape-on="click:increment">Plus</div>
+  <div data-value="counter"></div>
 </html>
+
+<!-- .js file -->
+<script>
+  import Sclape from 'sclape.js';
+
+  let counter = 0;
+
+  const sclape = new Sclape({
+    handlers: {
+      increment,
+    },
+    data: {
+      counter
+    }
+  })
+
+  sclape.initEvents();
+  const store = sclape.initStore();
+
+  function increment() {
+    store.counter.value += 1;
+  }
+  
+</script>
