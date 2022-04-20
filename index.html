@@ -1,6 +1,29 @@
+<!-- Example -->
 <html>
   <script src="./sclape/sclape.js" type="module"></script>
 
   <div data-sclape-on="click:handlerFunc"></div>
   <div data-value="variable"></div>
+
+  <script>
+
+    function handlerFunc() {
+      // ...
+    }
+
+    let variable = 'some text';
+
+    const sclape = new Sclape({
+      handlers: {
+        handlerFunc,
+      },
+      data: {
+        variable
+      }
+    })
+
+    sclape.initEvents();
+    const store = sclape.initStore();
+    
+  </script>
 </html>

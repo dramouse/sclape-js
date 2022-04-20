@@ -25,13 +25,16 @@ export default class Sclape {
       const elementEvents = element.dataset.sclapeOn.split(' ');
       if (!elementEvents.length) continue;
 
-      elementEvents.forEach(event => addEvent(element, event, this.handlers))
+      elementEvents.forEach(event => {
+        const remover = addEvent(element, event, this.handlers);
+        this.eventsRemovers.push(remover);
+      });
     }
   }
 
   // sclape event remover
   removeEvents() {
-    // ...
+    this.eventsRemovers.forEach(remover => remover());
   }
 
   // sclape store initialization
@@ -43,7 +46,7 @@ export default class Sclape {
 
 /**
  * Adds element event listener
- * @param {Object} element 
+ * @param {Object} element DOM element
  * @param {String} event event info from data attr (event:handlerFunc)
  * @param {Object} handlers object with all event handlers in sclape
  */
@@ -53,4 +56,8 @@ function addEvent(element, event, handlers) {
   var eventHandlerName = eventInfo[1];
 
   element.addEventListener(eventType, handlers[eventHandlerName]);
+
+  return function() {
+    element.removeEventListener(eventType, handlers[eventHandlerName]);
+  }
 }
