@@ -9,6 +9,7 @@ export default class Sclape {
   constructor({handlers, data}) {
     this.handlers = handlers;
     this.data = data;
+    this.eventsRemovers = [];
   }
 
   // sclape events initialization
@@ -49,6 +50,7 @@ export default class Sclape {
  * @param {Object} element DOM element
  * @param {String} event event info from data attr (event:handlerFunc)
  * @param {Object} handlers object with all event handlers in sclape
+ * @returns {Function} added event remover function
  */
 function addEvent(element, event, handlers) {
   var eventInfo = event.split(':');
