@@ -16,7 +16,7 @@ export default class Sclape {
   initEvents() {
     if (!Object.keys(this.handlers).length) return console.error('event handlers is not defined');
 
-    var elementsWithEvents = document.querySelectorAll('[data-sclape-on]');
+    const elementsWithEvents = document.querySelectorAll('[data-sclape-on]');
     
     if (!elementsWithEvents.length) return console.error('there is no elements with sclape events');
 
@@ -40,28 +40,29 @@ export default class Sclape {
 
   // sclape store initialization
   initStore() {
-    var dataLength = Object.keys(this.data).length;
+    const dataLength = Object.keys(this.data).length;
     if (!dataLength) return console.error('reactive data is not defined');
     
-    var store = {};
+    const store = {};
 
-    var elementsWithReactiveValue = document.querySelectorAll('[data-sclape-value]');
-    var elementsWithReactiveHtml = document.querySelectorAll('[data-sclape-html]');
+    const elementsWithReactiveValue = document.querySelectorAll('[data-sclape-value]');
+    const elementsWithReactiveHtml = document.querySelectorAll('[data-sclape-html]');
 
-    if (!elementsWithReactiveHtml.length && !elementsWithReactiveValue.length) return console.error('no elements with reactive data')
+    if (!elementsWithReactiveHtml.length && !elementsWithReactiveValue.length) return console.error('no elements with reactive data');
 
+    const dataEntries = Object.entries(this.data);
     for (let i = 0; i < dataLength; i++) {
-      const [key, value] = Object.entries(this.data)[i];
+      const [key, value] = dataEntries[i];
 
       elementsWithReactiveValue?.forEach(element => {
         if (element.dataset.sclapeValue === key) {
-          store[key] = initStoreData(element, value, 'text')
+          store[key] = initStoreData(element, value, 'text');
         }
       })
 
       elementsWithReactiveHtml?.forEach(element => {
         if (element.dataset.sclapeHtml === key) {
-          store[key] = initStoreData(element, value, 'html')
+          store[key] = initStoreData(element, value, 'html');
         }
       })
     }
@@ -79,9 +80,9 @@ export default class Sclape {
  * @returns {Function} added event remover function
  */
 function addEvent(element, event, handlers) {
-  var eventInfo = event.split(':');
-  var eventType = eventInfo[0];
-  var eventHandlerName = eventInfo[1];
+  const eventInfo = event.split(':');
+  const eventType = eventInfo[0];
+  const eventHandlerName = eventInfo[1];
 
   element.addEventListener(eventType, handlers[eventHandlerName]);
 
